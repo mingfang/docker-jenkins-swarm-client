@@ -24,6 +24,10 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 #Swarm Client
 RUN wget -O swarm-client.jar http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/2.0/swarm-client-2.0-jar-with-dependencies.jar
 
+#Docker client only
+RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-latest && \
+    chmod +x /usr/local/bin/docker
+
 #Add runit services
 COPY sv /etc/service 
 

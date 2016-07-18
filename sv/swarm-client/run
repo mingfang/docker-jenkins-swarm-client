@@ -6,4 +6,4 @@ source /etc/envvars
 env
 
 exec 2>&1
-exec java -jar /swarm-client.jar -master $MASTER -username $USERNAME -password $PASSWORD
+exec java -jar /swarm-client.jar -master $MASTER -deleteExistingClients -disableClientsUniqueId

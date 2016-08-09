@@ -23,7 +23,7 @@ RUN add-apt-repository ppa:webupd8team/java -y && \
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 #Swarm Client
-RUN wget -O swarm-client.jar http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/2.1/swarm-client-2.1-jar-with-dependencies.jar
+RUN wget -O swarm-client.jar http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/2.2/swarm-client-2.2-jar-with-dependencies.jar
 
 #Docker client only
 RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker

@@ -26,12 +26,18 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 RUN wget -O swarm-client.jar http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/2.2/swarm-client-2.2-jar-with-dependencies.jar
 
 #Docker client only
-RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker
+RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-1.11.1.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker
 
 #Kubectl
 RUN cd /usr/bin && \
     wget https://storage.googleapis.com/kubernetes-release/release/v1.3.4/bin/linux/amd64/kubectl && \
     chmod +x kubectl
+
+#Sonar Runner
+RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-2.6.1.zip && \
+    unzip sonar*zip && \
+    ln -s /sonar-scanner-*/bin/sonar-scanner /usr/local/bin && \
+    rm sonar*zip
 
 #Trust Github
 RUN mkdir -p /root/.ssh && \

@@ -3,7 +3,8 @@
 #sv start socklog-unix || exit 1
 
 source /etc/envvars
-env
+
+sed -i -e "s|ip: {{ IP }}|ip: $(hostname -i)|" /etc/hyperclair.yml
 
 exec 2>&1
 exec java -jar /swarm-client.jar -master $MASTER -deleteExistingClients -disableClientsUniqueId

@@ -15,7 +15,7 @@ RUN apt-get install -y --no-install-recommends runit
 CMD export > /etc/envvars && /usr/sbin/runsvdir-start
 
 # Utilities
-RUN apt-get install -y --no-install-recommends vim less net-tools inetutils-ping wget curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common jq psmisc iproute python ssh rsync
+RUN apt-get install -y --no-install-recommends vim less net-tools inetutils-ping wget curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common jq psmisc iproute python ssh rsync gettext-base
 
 #Install Oracle Java 8
 RUN add-apt-repository ppa:webupd8team/java -y && \
@@ -27,14 +27,14 @@ RUN add-apt-repository ppa:webupd8team/java -y && \
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 #Swarm Client
-RUN wget -O swarm-client.jar https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/2.2/swarm-client-2.2-jar-with-dependencies.jar
+RUN wget -O swarm-client.jar https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/3.4/swarm-client-3.4.jar
 
 #Docker client only
-RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-1.11.1.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker
+RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker
 
 #Kubectl
 RUN cd /usr/bin && \
-    wget https://storage.googleapis.com/kubernetes-release/release/v1.4.6/bin/linux/amd64/kubectl && \
+    wget https://storage.googleapis.com/kubernetes-release/release/v1.6.6/bin/linux/amd64/kubectl && \
     chmod +x kubectl
 
 #Sonar Runner

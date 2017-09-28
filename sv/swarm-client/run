@@ -7,4 +7,4 @@ source /etc/envvars
 sed -i -e "s|ip: {{ IP }}|ip: $(hostname -i)|" /etc/hyperclair.yml
 
 exec 2>&1
-exec java -jar /swarm-client.jar -master $MASTER -deleteExistingClients -disableClientsUniqueId -sslFingerprints " "
+exec java -jar /swarm-client.jar -username $SWARM_USER -password $SWARM_PASSWORD -master $MASTER -deleteExistingClients -disableClientsUniqueId -sslFingerprints " "

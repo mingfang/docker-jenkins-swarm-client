@@ -1,18 +1,17 @@
-FROM ubuntu:16.04
+FROM ubuntu:16.04 as base
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    LANG=en_US.UTF-8 \
-    TERM=xterm
+ENV DEBIAN_FRONTEND=noninteractive TERM=xterm
 RUN echo "export > /etc/envvars" >> /root/.bashrc && \
-    echo "export PS1='\e[1;31m\]\u@\h:\w\\$\[\e[0m\] '" | tee -a /root/.bashrc /etc/bash.bashrc && \
-    echo "alias tcurrent='tail /var/log/*/current -f'" | tee -a /root/.bashrc /etc/bash.bashrc
+    echo "export PS1='\[\e[1;31m\]\u@\h:\w\\$\[\e[0m\] '" | tee -a /root/.bashrc /etc/skel/.bashrc && \
+    echo "alias tcurrent='tail /var/log/*/current -f'" | tee -a /root/.bashrc /etc/skel/.bashrc
 
 RUN apt-get update
-RUN apt-get install -y locales && locale-gen en_US en_US.UTF-8
+RUN apt-get install -y locales && locale-gen en_US.UTF-8 && dpkg-reconfigure locales
+ENV LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
 # Runit
 RUN apt-get install -y --no-install-recommends runit
-CMD export > /etc/envvars && /usr/sbin/runsvdir-start
+CMD bash -c 'export > /etc/envvars && /usr/sbin/runsvdir-start'
 
 # Utilities
 RUN apt-get install -y --no-install-recommends vim less net-tools inetutils-ping wget curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common jq psmisc iproute python ssh rsync gettext-base
@@ -34,7 +33,7 @@ RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar
 
 #Kubectl
 RUN cd /usr/bin && \
-    wget https://storage.googleapis.com/kubernetes-release/release/v1.6.6/bin/linux/amd64/kubectl && \
+    wget https://storage.googleapis.com/kubernetes-release/release/v1.7.6/bin/linux/amd64/kubectl && \
     chmod +x kubectl
 
 #Sonar Runner
@@ -46,6 +45,16 @@ RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-sc
 #Trust Github
 RUN mkdir -p /root/.ssh && \
     ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+#AWS CLI
+RUN apt-get install -y python-pip
+RUN pip install pip --upgrade
+RUN pip install awscli --upgrade
+
+# Nodejs
+RUN wget -O - https://nodejs.org/dist/v8.4.0/node-v8.4.0-linux-x64.tar.gz | tar xz
+RUN mv node* node
+ENV PATH $PATH:/node/bin
 
 #Hyperclair
 RUN curl -L -o /usr/local/bin/hyperclair  https://github.com/wemanity-belgium/hyperclair/releases/download/0.5.2/hyperclair-linux-amd64 && \

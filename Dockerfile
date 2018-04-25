@@ -26,18 +26,18 @@ RUN add-apt-repository ppa:webupd8team/java -y && \
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 #Swarm Client
-RUN wget -O swarm-client.jar https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/3.4/swarm-client-3.4.jar
+RUN wget -O swarm-client.jar https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/3.12/swarm-client-3.12.jar
 
 #Docker client only
 RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker
 
 #Kubectl
 RUN cd /usr/bin && \
-    wget https://storage.googleapis.com/kubernetes-release/release/v1.7.6/bin/linux/amd64/kubectl && \
+    wget https://storage.googleapis.com/kubernetes-release/release/v1.9.3/bin/linux/amd64/kubectl && \
     chmod +x kubectl
 
 #Sonar Runner
-RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-2.6.1.zip && \
+RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778.zip && \
     unzip sonar*zip && \
     ln -s /sonar-scanner-*/bin/sonar-scanner /usr/local/bin && \
     rm sonar*zip
@@ -46,20 +46,7 @@ RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-sc
 RUN mkdir -p /root/.ssh && \
     ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-#AWS CLI
-RUN apt-get install -y python-pip
-RUN pip install pip --upgrade
-RUN pip install awscli --upgrade
-
-# Nodejs
-RUN wget -O - https://nodejs.org/dist/v8.4.0/node-v8.4.0-linux-x64.tar.gz | tar xz
-RUN mv node* node
-ENV PATH $PATH:/node/bin
-
-#Hyperclair
-RUN curl -L -o /usr/local/bin/hyperclair  https://github.com/wemanity-belgium/hyperclair/releases/download/0.5.2/hyperclair-linux-amd64 && \
-    chmod +x /usr/local/bin/hyperclair
-COPY hyperclair.yml /etc/hyperclair.yml
+ENV DATA /data
 
 #Add runit services
 COPY sv /etc/service 

@@ -26,7 +26,7 @@ RUN add-apt-repository ppa:webupd8team/java -y && \
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 #Swarm Client
-RUN wget -O swarm-client.jar https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/3.12/swarm-client-3.12.jar
+RUN wget -O swarm-client.jar https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/3.14/swarm-client-3.14.jar
 
 #Docker client only
 RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker
@@ -35,12 +35,6 @@ RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar
 RUN cd /usr/bin && \
     wget https://storage.googleapis.com/kubernetes-release/release/v1.9.3/bin/linux/amd64/kubectl && \
     chmod +x kubectl
-
-#Sonar Runner
-RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778.zip && \
-    unzip sonar*zip && \
-    ln -s /sonar-scanner-*/bin/sonar-scanner /usr/local/bin && \
-    rm sonar*zip
 
 #Trust Github
 RUN mkdir -p /root/.ssh && \

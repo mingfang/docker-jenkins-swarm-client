@@ -7,4 +7,4 @@ source /etc/envvars
 mkdir -p $DATA 
 
 exec 2>&1
-exec java -jar /swarm-client.jar -fsroot $DATA ${SWARM_USER:"-username $SWARM_USER"} ${SWARM_PASSWORD:"-password $SWARM_PASSWORD"} -master $MASTER -deleteExistingClients -disableClientsUniqueId -sslFingerprints " "
+exec java -jar /swarm-client.jar -fsroot $DATA ${SWARM_USER:+"-username $SWARM_USER"} ${SWARM_PASSWORD:+"-password $SWARM_PASSWORD"} -master $MASTER -deleteExistingClients -disableClientsUniqueId -sslFingerprints " "
